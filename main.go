@@ -187,7 +187,7 @@ func RunMassdns(fleetName string, outputPath string, mode string, domain string,
 	if mode == "1" {
 		// run shuffledns in mode 1: runs after initial enumeration.
 		// Trying out Shuffledns instead. Loop through domains in domains.txt, mkdir for each domainm, grep from subdomainscombined using the domain, output to associated dir, then run shuffledns.
-		RunShufflednsCommand := "shuffledns -r ./wordlists/resolvers.txt -d " + domain + " -list " + outputPath + "subdomains.txt -o " + outputPath + "shuffledns.out -wt 100 "
+		RunShufflednsCommand := "puredns resolve " + outputPath + "subdomains.txt -w " + outputPath + "shuffledns.out -r ~/tools/resolvers.txt --bin ~/tools/massdns/bin/massdns --threads 200 "
 		fmt.Println("Running shuffledns mode 1 - " + RunShufflednsCommand)
 		exec.Command("bash", "-c", RunShufflednsCommand).Output()
 		//if err != nil {
@@ -198,7 +198,7 @@ func RunMassdns(fleetName string, outputPath string, mode string, domain string,
 	}
 	if mode == "2" {
 		// run shuffledns in mode 2: runs after dnsgen
-		RunShufflednsCommand := "shuffledns -r ./wordlists/resolvers.txt  -d " + domain + " -list " + outputPath + "dnsgen.out -o " + outputPath + "subdomains-results-massdns.txt -wt 100"
+		RunShufflednsCommand := "puredns resolve " + outputPath + "dnsgen.out -w " + outputPath + "shuffledns.out -r ~/tools/resolvers.txt --bin ~/tools/massdns/bin/massdns --threads 200 "
 		fmt.Println("Running shuffledns mode 2 - " + RunShufflednsCommand)
 		exec.Command("bash", "-c", RunShufflednsCommand).Output()
 		//if err != nil {
